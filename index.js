@@ -1,17 +1,33 @@
+let ar
+let ti = new Array;
+let t = [];
+let tCopia = [];
+let T = [];
+let E = [];
+let I = [];
+let promT = 0;
+let promE = 0;
+let promI = 0;
+let indexti;
+let indext
 class Excel{
+    
     constructor(content){
         this.content=content;
     }
     header(){
+        indexti = this.content[0].indexOf('Ti');
+        indext = this.content[0].indexOf('t');
         return this.content[0];
     }
     rows(){
+        ar = this.content.slice(1,this.content.length);
         return this.content.slice(1,this.content.length);
     }
 
 }
 
-const excelInput = document.getElementById("excel-input");
+const excelInput =  document.getElementById("excel-input")
 
 excelInput.addEventListener('change',async function(){
 
@@ -22,21 +38,19 @@ excelInput.addEventListener('change',async function(){
     console.log(excel.header());
     console.log(excel.rows());
 
+    console.log("array con los datos");
+    for (let index = 0; index < ar.length; index++) {
+            ti[index] = ar[index][indexti];
+            t[index] = ar[index][indext];
+    }
+    tCopia = [...t]
+    console.log(ti);
+    roundRobin(ti, t);
+
 })
 
-const ti = [2, 9, 8, 7, 6, 5, 40, 4, 39, 38, 37, 36,35,34,33,32,31,30,3,29,28,27,26,25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10];
-const t = [17, 47, 14, 32, 48,23, 13, 37, 24, 4, 25, 34,26,38,15,31,42,21,45,43,36,22,49,18,39,27,46,16,30,44,35,20,50,19,33,41,28,40,29];
-const tCopia = [...t];
-let T = new Array(ti.length);
-let E = new Array(ti.length);
-let I = new Array(ti.length);
-let promT = 0;
-let promE = 0;
-let promI = 0;
-//roundRobin(ti, t);
-
 function roundRobin(ti, t) {
-    let tf = new Array(ti.length).fill(null);
+    let tf = new Array(ti.length);
     let clock = 0;
     let acum = 0;
     const q = 4;
