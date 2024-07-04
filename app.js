@@ -1,9 +1,58 @@
-const ti = [2, 6, 5, 9, 11, 15, 7, 3, 8, 4, 12, 16];
-const t = [1, 6, 3, 5, 4, 10, 9, 7, 2, 8, 11, 12];
+const ti = [];
+const t = [];
+let indexti;
+let indext;
+let ar;
 // const ti = [2,9,8,7,6,5,40,4,39,38,37,36,35,34,33,32,31,30,3,29,28,27,26,25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10]
 // const t =[17,47,14,32,48,23,13,37,24,4,25,34,26,38,15,31,42,21,45,43,36,22,49,18,39,27,46,16,30,44,35,20,50,19,33,41,28,40,29]
-const tiSize = ti.length;
+let tiSize;
+let q;
+let indexq;
 
+class Excel{
+    
+    constructor(content){
+        this.content=content;
+    }
+    header(){
+        indexti = this.content[0].indexOf('Ti');
+        indext = this.content[0].indexOf('t');
+        indexq = this.content[0].indexOf('quantum');
+        return this.content[0];
+    }
+    rows(){
+        ar = this.content.slice(1,this.content.length);
+        return ar;
+    }
+
+}
+
+const excelInput =  document.getElementById("excel-input")
+
+excelInput.addEventListener('change',async function(){
+
+    const content = await readXlsxFile(excelInput.files[0]);
+
+    const excel = new Excel(content);
+
+    console.log(excel.header());
+    console.log(excel.rows());
+
+    console.log("array con los datos");
+    for (let index = 0; index < ar.length; index++) {
+        ti[index] = ar[index][indexti] !== null ? ar[index][indexti] : 0;
+        t[index] = ar[index][indext] !== null ? ar[index][indext] : 0;
+    }
+    tCopia = [...t]
+    console.log(ti);
+    console.log(t);
+    tiSize = ti.length;
+    q = ar[0][indexq];
+    fifo(ti, t);
+    lifo(ti, t);
+    roundRobin (ti,t)
+
+})
 
 const mostrarTabla = (tf) =>{
 
@@ -44,6 +93,7 @@ const mostrarTabla = (tf) =>{
 };
 
 const fifo = (ti, t, lifo = false) => {
+    console.log("Esto es FIFO");
     let limit = tiSize + 2;
     let cont = 0;
     let clk = 0
@@ -75,10 +125,10 @@ const lifo = (ti, t) => {
 };
 
 function roundRobin(ti, t) {
+    console.log("Round Robin q = ",q);
     let tf = new Array(ti.length).fill(null);
     let clock = 0;
     let acum = 0;
-    const q = 4;
     const tiCopia = [...ti]
     const tCopia = [...t]
 
@@ -118,6 +168,3 @@ function roundRobin(ti, t) {
 }
 
 
-// fifo(ti, t);
-// lifo(ti, t);
-roundRobin (ti,t)
