@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-    <title>Document</title>
+    <title>Calculadora de Procesos</title>
     
 </head>
 <body>
@@ -18,10 +18,31 @@
         </div>
     </div>
 
+    <div class="container">
+        <div class="button-container">
+            <button onclick="fifo(ti,t),ola()">FF</button>
+            <button onclick="lifo(ti,t)">LF</button>
+            <button onclick="roundRobin(ti,t)">RR</button>
+        </div>
+    </div>
+
+    <div id="table-container">
+        <table id="tbr" class="result-table">
+        </table>
+    </div>
+
+    <footer class="footer">
+        <p>Desarrollado por Angelina Pineda Y Juan Camarillo</p>
+    </footer>
+
     <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
     rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
     crossorigin="anonymous">
     <script src="app.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ga+Maamli&display=swap" rel="stylesheet">
 </body>
 </html>
