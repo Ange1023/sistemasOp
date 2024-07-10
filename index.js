@@ -1,15 +1,13 @@
-let ar
-let ti = new Array;
-let t = [];
-let tCopia = [];
-let T = [];
-let E = [];
-let I = [];
-let promT = 0;
-let promE = 0;
-let promI = 0;
+const ti = [];
+const t = [];
 let indexti;
-let indext
+let indext;
+let ar;
+// const ti = [2,9,8,7,6,5,40,4,39,38,37,36,35,34,33,32,31,30,3,29,28,27,26,25,24,23,22,21,20,19,18,17,16,15,14,13,12,11,10]
+// const t =[17,47,14,32,48,23,13,37,24,4,25,34,26,38,15,31,42,21,45,43,36,22,49,18,39,27,46,16,30,44,35,20,50,19,33,41,28,40,29]
+let q;
+let indexq;
+
 class Excel{
     
     constructor(content){
@@ -18,11 +16,12 @@ class Excel{
     header(){
         indexti = this.content[0].indexOf('Ti');
         indext = this.content[0].indexOf('t');
+        indexq = this.content[0].indexOf('quantum');
         return this.content[0];
     }
     rows(){
         ar = this.content.slice(1,this.content.length);
-        return this.content.slice(1,this.content.length);
+        return ar;
     }
 
 }
@@ -40,32 +39,110 @@ excelInput.addEventListener('change',async function(){
 
     console.log("array con los datos");
     for (let index = 0; index < ar.length; index++) {
-            ti[index] = ar[index][indexti];
-            t[index] = ar[index][indext];
+        ti[index] = ar[index][indexti] !== null ? ar[index][indexti] : 0;
+        t[index] = ar[index][indext] !== null ? ar[index][indext] : 0;
     }
     tCopia = [...t]
     console.log(ti);
-    roundRobin(ti, t);
+    console.log(t);
+    q = ar[0][indexq];
+    fifo(ti, t);
+    lifo(ti, t);
+    roundRobin (ti,t)
 
 })
 
-function roundRobin(ti, t) {
-    let tf = new Array(ti.length);
+const mostrarTabla = (tf) =>{
+
+    T = new Array(ti.length);
+    E = new Array(ti.length);
+    I = new Array(ti.length);
+    promT = 0;
+    promE = 0;
+    promI = 0;
+
+    console.log("---ti---t---tf---T---E---I");
+
+    for (let i = 0; i < ti.length; i++) {
+        T[i] = tf[i] - ti[i];
+        E[i] = T[i] - t[i];
+        I[i] = t[i] / T[i];
+
+        promT += T[i];
+        promE += E[i];
+        promI += I[i];
+        if(i + 1 == ti.length) {
+            promT /= ti.length;
+            promE /= ti.length;
+            promI /= ti.length;
+        }
+
+        console.log(`
+            ${ti[i].toString().padStart(2)}   ${t[i].toString().padStart(2)}   ${tf[i].toString().padStart(2)}   ${T[i].toString().padStart(2)}   ${E[i].toString().padStart(2)}   ${I[i].toFixed(2).padStart(5)}
+        `);
+    }
+
+    // Línea con promedios
+    console.log("Promedios:");
+    console.log(`
+        ${promT.toFixed(4).padStart(8)}   ${promE.toFixed(4).padStart(8)}   ${promI.toFixed(4).padStart(8)}
+    `);
+
+};
+
+const fifo = (ti, t, lifo = false) => {
+    let clock = 0
+    let flag = true
+    let tf = new Array(ti.length).fill(null)
+    do {
+        
+        let elemento = ti.find((e, i) => {
+            if (e <= clock && tf[i] == null) {
+                clock += t[i];
+                tf[i] = clock;
+                return e;
+            }
+        });
+
+        
+
+        if (elemento === undefined) {
+            clock++;
+        }
+        flag = (tf.includes(null))
+        
+    } while (flag);
+    
+    if (lifo) {
+        tf.reverse();
+    }
+    mostrarTabla(tf);
+};
+
+const lifo = (ti, t) => {
+    const tiReversed = [...ti].reverse();
+    const tReversed = [...t].reverse();
+    fifo(tiReversed, tReversed, true);
+};
+
+const roundRobin = (ti, t) => {
+    let tf = new Array(ti.length).fill(null);
     let clock = 0;
     let acum = 0;
     const q = 4;
-
+    const tiCopia = [...ti]
+    const tCopia = [...t]
+    let flag = false;
     do {
-        flag = false;
+        
 
-        // Aplicando Round Robin
-        for (let i = 0; i < ti.length; i++) {
-            if (ti[i] <= clock && tf[i] == null) {
-                if (t[i] > q) {
-                    t[i] -= q;
+        tiCopia.forEach((e,i) => {
+            if (tiCopia[i] <= clock && tf[i] == null) {
+                if (tCopia[i] > q) {
+                    tCopia[i] -= q;
                     clock += q;
                 } else {
-                    for (t[i]; t[i] > 0; t[i]--) {
+                    for (tCopia[i]; tCopia[i] > 0; tCopia[i]--) {
                         clock++;
                     }
                     tf[i] = clock;
@@ -73,49 +150,15 @@ function roundRobin(ti, t) {
             } else {
                 acum++;
             }
-        }
+        });
 
         if (acum == ti.length) {
             clock++;
         }
         acum = 0;
 
-        // Comprobando condición de terminación
-        for (let i = 0; i < tf.length; i++) {
-            if (tf[i] == null) {
-                flag = true;
-            }
-        }
+        flag = tf.includes(null)
+
     } while (flag);
-
-    console.log("---ti---t---tf---T---E---I");
-
-    for (let i = 0; i < ti.length; i++) {
-        T[i] = tf[i] - ti[i];
-        E[i] = T[i] - tCopia[i];
-        I[i] = tCopia[i] / T[i];
-
-        promT += T[i];
-        promE += E[i];
-        promI += I[i];
-        if(i+1==ti.length){
-
-            promT /= ti.length;
-            promE /= ti.length;
-            promI /= ti.length;
-
-        }
-
-        console.log(
-            `${ti[i].toString().padStart(2)}   ${tCopia[i].toString().padStart(2)}   ${tf[i].toString().padStart(2)}   ${T[i].toString().padStart(2)}   ${E[i].toString().padStart(2)}   ${I[i].toFixed(2).padStart(5)}`
-        );
-    }
-
-    // Línea con promedios
-    console.log("Promedios:");
-    console.log(
-        `${promT.toFixed(2).padStart(8)}   ${promE.toFixed(2).padStart(8)}   ${promI.toFixed(2).padStart(8)}`
-    );
+    mostrarTabla(tf);
 }
-
-
