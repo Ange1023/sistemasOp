@@ -66,8 +66,6 @@ const mostrarTabla = (tf,funcion) =>{
     console.log("---ti---t---tf---T---E---I");
 
     sendDOM("FIFO",tf,tb);
-    sendDOM("LIFO",tf,tb);
-    sendDOM("RR",tf,tb);
         
     // Línea con promedios
     console.log("Promedios:");
@@ -184,7 +182,7 @@ function sendDOM(funcion,tf,tb){
 
 const fifo = (ti, t, lifo = false) => {
     let inicio = performance.now();
-    limpiarTabla();
+    tbr.innerHTML = '';
     if(a===true){
 
         let f = "FIFO";
@@ -228,11 +226,6 @@ const fifo = (ti, t, lifo = false) => {
     
 };
 
-function limpiarTabla(){
-
-    tbr.innerHTML = '';
-
-}
 
 const lifo = (ti, t) => {
     const tiReversed = [...ti].reverse();
@@ -242,27 +235,24 @@ const lifo = (ti, t) => {
 
 const roundRobin = (ti, t) => {
     let inicio = performance.now();
-    limpiarTabla();
+    let tf = new Array(ti.length).fill(null);
+    let clock = 0;
+    let acum = 0;
+    const q = 4;
+    const tiCopia = [...ti]
+    const tCopia = [...t]
+    let flag = false;
+    tbr.innerHTML = '';
     if(a===true){
-        let tf = new Array(ti.length).fill(null);
-        let clock = 0;
-        let acum = 0;
-        const q = 4;
-        const tiCopia = [...ti]
-        const tCopia = [...t]
-        let flag = false;
+       
         do {
-            
-
             tiCopia.forEach((e,i) => {
                 if (tiCopia[i] <= clock && tf[i] == null) {
                     if (tCopia[i] > q) {
                         tCopia[i] -= q;
                         clock += q;
                     } else {
-                        for (tCopia[i]; tCopia[i] > 0; tCopia[i]--) {
-                            clock++;
-                        }
+                        clock+=tCopia[i];
                         tf[i] = clock;
                     }
                 } else {
@@ -286,10 +276,4 @@ const roundRobin = (ti, t) => {
     }
     let fin = performance.now();
     console.log(fin-inicio);
-}
-
-function ola(){
-
-    console.log("ola");
-
 }
