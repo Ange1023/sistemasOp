@@ -6,6 +6,10 @@ let exceldata; // cotenedor de la tabla del excel
 let q; // quantum
 let indexq; // indice en la tabla q del excel
 let alerta = false; // booleano que indica si se paso o no el archivo
+let listapromI = []; // arreglo para guardar los promedios de I 
+let promT;
+let promE;
+let promI;
 
 class Excel{
     
@@ -42,7 +46,6 @@ excelInput.addEventListener('change',async function(){
     tCopia = [...t]
     q = exceldata[0][indexq];
     alerta = true;
-
 })
 
 function mostrarTabla(tf){
@@ -84,11 +87,6 @@ function mostrarTabla(tf){
             promT += T[i];
             promE += E[i];
             promI += I[i];
-            if(i + 1 == ti.length) {
-                promT /= ti.length;
-                promE /= ti.length;
-                promI /= ti.length;
-            }
 
             // Crea una nueva fila tr y sus celdas td
             const tr = document.createElement('tr');
@@ -121,7 +119,10 @@ function mostrarTabla(tf){
             // Agrega la fila al tbody
             tb.appendChild(tr);
         }
-        
+        promT /= ti.length;
+        promE /= ti.length;
+        promI /= ti.length;
+
     // Creamos el tfoot
      const tfoot = document.createElement('thead');
      const trFoot = document.createElement('tr');
@@ -150,10 +151,36 @@ function mostrarTabla(tf){
      // Añadimos el tfoot al final de la tabla
      tbr.appendChild(tfoot);
     
-
 }
 
+const btns = document.querySelectorAll('.boton');
+     btns.forEach((btn) => {
+         btn.addEventListener('click', e => {
+            // Verificar si la posición en el arreglo listapromI está vacía
+            promI !== undefined && !listapromI[e.target.id-1] && (listapromI[e.target.id-1] = promI.toFixed(4));
+
+            if(!listapromI[0] == [] && !listapromI[1] == [] && !listapromI[2] == []){
+                console.log(listapromI);
+                let maximo = listapromI.map(parseFloat);
+                console.log(Math.max(...maximo));
+
+                let indiceGanador = listapromI.findIndex(elemento => parseFloat(elemento) === Math.max(...maximo));
+
+                btns.forEach((boton, index) => {
+                    if (index == indiceGanador) {
+                        console.log("hola");
+                        boton.classList.add('ganador');
+                    } else {
+                        boton.classList.remove('ganador');
+                    }
+                });
+
+            }
+    });
+});
+
 const fifo = (ti, t, lifo = false) => {
+
     let inicio = performance.now();
     tbr.innerHTML = '';
     if(alerta){
@@ -182,6 +209,7 @@ const fifo = (ti, t, lifo = false) => {
         
         if (lifo) {
             tf.reverse();
+            funcion="lf";
         }
         mostrarTabla(tf);
 

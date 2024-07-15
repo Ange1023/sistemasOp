@@ -125,6 +125,26 @@ button:hover::before {
     animation: glowing 20s linear infinite;
 }
 
+/* Estilo para el botón ganador */
+.boton.ganador {
+    background-color: gold; /* Color de fondo dorado para la corona */
+    color: black; /* Color del texto para asegurar visibilidad */
+    font-weight: bold; /* Texto en negrita */
+    position: relative; /* Posición relativa para posicionar la corona */
+}
+
+/* Pseudo-elemento ::before para crear la corona */
+.boton.ganador::before {
+    content: '';
+    position: absolute; /* Posición absoluta relativa al botón */
+    top: -20px; /* Ajusta la posición vertical de la corona */
+    left: calc(50% - 20px); /* Ajusta la posición horizontal para centrar */
+    border-bottom: 20px solid gold; /* Triángulo para la corona */
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+}
+
+
 .form-control {
     width: 100%; /* Opcional: Ajusta el ancho del input al 100% del contenedor */
     padding: 10px;
