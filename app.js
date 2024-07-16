@@ -168,7 +168,6 @@ const btns = document.querySelectorAll('.boton');
 
                 btns.forEach((boton, index) => {
                     if (index == indiceGanador) {
-                        console.log("hola");
                         boton.classList.add('ganador');
                     } else {
                         boton.classList.remove('ganador');
