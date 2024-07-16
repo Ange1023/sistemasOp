@@ -10,6 +10,12 @@ body {
     --color1: rgb(147,32,32);
     --color2: rgb(199,26,36);
 }
+.time{
+    display: flex;
+    justify-content: space-evenly;
+    gap: 110px;
+    width: 100%;
+}
 .container {
     max-width: 800px;
     margin: 20px auto;

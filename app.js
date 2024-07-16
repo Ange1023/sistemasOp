@@ -161,6 +161,15 @@ const btns = document.querySelectorAll('.boton');
 
             if(!listapromI[0] == [] && !listapromI[1] == [] && !listapromI[2] == []){
                 console.log(listapromI);
+
+                let time_fifo = document.getElementById("t1");
+                let time_lifo = document.getElementById("t2");
+                let time_roundRobin = document.getElementById("t3");
+
+                time_fifo.textContent = listapromI[0];
+                time_lifo.textContent = listapromI[1];
+                time_roundRobin.textContent = listapromI[2];
+
                 let maximo = listapromI.map(parseFloat);
                 console.log(Math.max(...maximo));
 
@@ -178,7 +187,7 @@ const btns = document.querySelectorAll('.boton');
     });
 });
 
-const fifo = (ti, t, lifo = false) => {
+const fifo_lifo = (ti, t, lifo = false) => {
 
     let inicio = performance.now();
     tbr.innerHTML = '';
@@ -187,19 +196,23 @@ const fifo = (ti, t, lifo = false) => {
         let clock = 0
         let flag = true
         let tf = new Array(ti.length).fill(null)
+        if (lifo) {
+            ti = [...ti].reverse();
+            t = [...t].reverse();
+        }
         do {
             
             let elemento = ti.find((e, i) => {
                 if (e <= clock && tf[i] == null) {
                     clock += t[i];
                     tf[i] = clock;
-                    return e;
+                    return true;
                 }
             });
 
             
 
-            if (elemento === undefined) {
+            if (!elemento) {
                 clock++;
             }
             flag = (tf.includes(null))
@@ -222,13 +235,6 @@ const fifo = (ti, t, lifo = false) => {
 
     console.log(fin-inicio);
     
-};
-
-
-const lifo = (ti, t) => {
-    const tiReversed = [...ti].reverse();
-    const tReversed = [...t].reverse();
-    fifo(tiReversed, tReversed, true);
 };
 
 const roundRobin = (ti, t) => {

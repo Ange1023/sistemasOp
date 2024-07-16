@@ -19,9 +19,14 @@
     </div>
 
     <div class="container">
+        <div class="time">
+            <div id="t1"></div>
+            <div id="t2"></div>
+            <div id="t3"></div>
+        </div>
         <div class="button-container">
-            <button class="boton" id="1" onclick="fifo(ti,t)">FF</button>
-            <button class="boton" id="2" onclick="lifo(ti,t)">LF</button>
+            <button class="boton" id="1" onclick="fifo_lifo(ti,t)">FF</button>
+            <button class="boton" id="2" onclick="fifo_lifo(ti,t,true)">LF</button>
             <button class="boton" id="3" onclick="roundRobin(ti,t)">RR</button>
         </div>
     </div>
