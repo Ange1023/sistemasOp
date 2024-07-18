@@ -79,7 +79,7 @@ function mostrarTabla(tf){
 
         tbr.insertBefore(tHead,tb);
 
-        for (let i = 0; i < ti.length; i++) {
+        ti.forEach((e,i)=>{
             T[i] = tf[i] - ti[i];
             E[i] = T[i] - t[i];
             I[i] = t[i] / T[i];
@@ -118,7 +118,7 @@ function mostrarTabla(tf){
 
             // Agrega la fila al tbody
             tb.appendChild(tr);
-        }
+        })
         promT /= ti.length;
         promE /= ti.length;
         promI /= ti.length;
@@ -160,7 +160,7 @@ const btns = document.querySelectorAll('.boton');
             promI !== undefined && !listapromI[e.target.id-1] && (listapromI[e.target.id-1] = promI.toFixed(4));
 
             if(!listapromI[0] == [] && !listapromI[1] == [] && !listapromI[2] == []){
-                console.log(listapromI);
+                //console.log(listapromI);
 
                 let time_fifo = document.getElementById("t1");
                 let time_lifo = document.getElementById("t2");
@@ -171,7 +171,7 @@ const btns = document.querySelectorAll('.boton');
                 time_roundRobin.textContent = listapromI[2];
 
                 let maximo = listapromI.map(parseFloat);
-                console.log(Math.max(...maximo));
+                //console.log(Math.max(...maximo));
 
                 let indiceGanador = listapromI.findIndex(elemento => parseFloat(elemento) === Math.max(...maximo));
 
@@ -232,8 +232,12 @@ const fifo_lifo = (ti, t, lifo = false) => {
     }
 
     let fin = performance.now();
-
-    console.log(fin-inicio);
+    if(lifo){
+       console.log(`Tiempo lifo: ${fin-inicio}`); 
+    }else{
+        console.log(`Tiempo fifo: ${fin-inicio}`)
+    }
+    
     
 };
 
@@ -272,5 +276,5 @@ const roundRobin = (ti, t) => {
     }
 
     let fin = performance.now();
-    console.log(fin-inicio);
+    console.log(`Tiempo roundRobin: ${fin-inicio}`)
 }

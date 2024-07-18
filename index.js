@@ -183,13 +183,13 @@ const  sendDOM = (funcion,tf,tb) =>{
 }
 
 const fifo = (ti, t, lifo = false) => {
-    
+    limpiarTabla();
     if(lifo){
         ti = [...ti].reverse();
         t = [...t].reverse();    
     }
     let inicio = performance.now();
-    limpiarTabla();
+    
     if(a===true){
 
     let f = "FIFO";
@@ -226,8 +226,6 @@ const fifo = (ti, t, lifo = false) => {
 }
 
 let fin = performance.now();
-
-console.log(fin-inicio);
 
 };
 
